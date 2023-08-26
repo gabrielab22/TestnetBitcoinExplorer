@@ -2,6 +2,30 @@ const express = require("express");
 const router = express.Router();
 const client = require("../config/blockchainClient.js");
 
+router.get("/all", async (req, res) => {
+  try {
+    const blockchainInfo = await client.getBlockchainInfo();
+    const latestBlockHeight = blockchainInfo.blocks;
+
+    const numBlocksToFetch = Math.min(5, latestBlockHeight - 1);
+    const blocks = [];
+
+    for (
+      let height = latestBlockHeight;
+      height > latestBlockHeight - numBlocksToFetch;
+      height = height - 1
+    ) {
+      const blockHash = await client.getBlockHash(height);
+      const blockInfo = await client.getBlock(blockHash);
+      blocks.push(blockInfo);
+    }
+
+    res.json(blocks);
+  } catch (error) {
+    return res.status(404).send("Blocks not found");
+  }
+});
+
 router.get("/last", async (req, res) => {
   try {
     console.log("tuu");
