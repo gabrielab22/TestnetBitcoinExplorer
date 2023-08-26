@@ -1,17 +1,15 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const client = require("../config/blockchainClient.js");
 
-router.get('/', (req, res) => {
-    client.getBlockchainInfo().then((err, response) => {
-        if (err) {
-            res.send(err)
-        }
-        else {
-            return res.json(response)
-        }
-    })
-})
+router.get("/", async (req, res) => {
+  console.log("u info san");
+  try {
+    const myBlockchain = await client.getBlockchainInfo();
+    return res.json(myBlockchain);
+  } catch {
+    return res.status(404).send("Blockchain not found");
+  }
+});
 
 module.exports = router;
