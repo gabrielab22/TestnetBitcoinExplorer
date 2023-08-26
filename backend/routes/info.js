@@ -3,7 +3,6 @@ const router = express.Router();
 const client = require("../config/blockchainClient.js");
 
 router.get("/", async (req, res) => {
-  console.log("u info san");
   try {
     const myBlockchain = await client.getBlockchainInfo();
     return res.json(myBlockchain);

@@ -35,16 +35,24 @@ const fetchLatestBlockInfo = async () => {
   }
 };
 
-const fetchBlockInfo = async (blockNum) => {
-  const blockHash = await client.getBlockHash(blockNum);
-  const blockInfo = await client.getBlock(blockHash);
-  return blockInfo;
+const fetchBlockInfo = async (blockNumber) => {
+  try {
+    const blockHash = await client.getBlockHash(blockNumber);
+    const blockInfo = await client.getBlock(blockHash);
+    return blockInfo;
+  } catch (error) {
+    throw new Error("Unable to fetch block");
+  }
 };
 
 const getBlockByHash = async (blockHash) => {
-  const blockInfo = await client.getBlock(blockHash);
-  const blockStats = await client.getBlockStats(blockHash);
-  return { ...blockInfo, ...blockStats };
+  try {
+    const blockInfo = await client.getBlock(blockHash);
+    const blockStats = await client.getBlockStats(blockHash);
+    return { ...blockInfo, ...blockStats };
+  } catch (error) {
+    throw new Error("Unable to fetch block by hash");
+  }
 };
 
 module.exports = router;
