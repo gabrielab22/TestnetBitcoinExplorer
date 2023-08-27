@@ -28,12 +28,25 @@ router.get("/all", async (req, res) => {
 
 router.get("/last", async (req, res) => {
   try {
-    console.log("tuu");
     const block = await fetchLatestBlockInfo();
 
     return res.json(block);
   } catch {
     return res.status(404).send("Last blok not found");
+  }
+});
+
+router.get("/number/:num", async (req, res) => {
+  try {
+    const { num } = req.params;
+
+    const intNumber = parseFloat(num);
+
+    const block = await fetchBlockInfo(intNumber);
+
+    return res.json(block);
+  } catch {
+    return res.status(404).send("Block not found");
   }
 });
 
@@ -48,24 +61,11 @@ router.get("/:blockHash", async (req, res) => {
   }
 });
 
-router.get("number/:num", async (req, res) => {
-  try {
-    console.log("blabla");
-    const { blockNum } = req.params;
-    console.log(blockNum);
-
-    const block = await fetchBlockInfo(blockNum);
-    return res.json(block);
-  } catch {
-    return res.status(404).send("Block not found");
-  }
-});
-
 const fetchLatestBlockInfo = async () => {
   try {
     const blockchainInfo = await client.getBlockchainInfo();
     const latestBlockNumber = blockchainInfo.blocks;
-    console.log(latestBlockNumber);
+
     const latestBlockInfo = await fetchBlockInfo(latestBlockNumber);
     return latestBlockInfo;
   } catch (error) {
@@ -76,6 +76,7 @@ const fetchLatestBlockInfo = async () => {
 const fetchBlockInfo = async (blockNumber) => {
   try {
     const blockHash = await client.getBlockHash(blockNumber);
+
     const blockInfo = await client.getBlock(blockHash);
     return blockInfo;
   } catch (error) {

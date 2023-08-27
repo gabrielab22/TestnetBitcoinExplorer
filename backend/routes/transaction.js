@@ -46,7 +46,7 @@ const getTransaction = async (txid) => {
   const isCoinbaseTransaction = transactionInfo.vin.some(
     (input) => input.coinbase
   );
-  console.log(isCoinbaseTransaction);
+
   const fee = isCoinbaseTransaction
     ? null
     : await calculateTransactionFee(transactionInfo);
