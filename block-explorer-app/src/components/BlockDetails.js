@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 function BlockDetails({ block }) {
   return (
@@ -9,21 +8,31 @@ function BlockDetails({ block }) {
         <span className="font-semibold">Hash:</span> {block.hash}
       </p>
       <p className="mt-2">
-        <span className="font-semibold">Timestamp:</span>{" "}
-        {block.time}
+        <span className="font-semibold">Timestamp:</span> {block.time}
       </p>
-      <span className="font-semibold">Transaction:</span>{" "}
-      {block.tx.map(
-        (tx, index) => (
-          <div key={tx}>
-            Tx #{(index + 1)}:
-            <br />
-            <a href={`/transaction-details/${tx}`} className="underline text-emerald-400">
-              {tx}
-            </a>
-          </div>
-        ))}
-
+      <p className="mt-2">
+        <span className="font-semibold">Nonce:</span> {block.nonce}
+      </p>
+      <p className="mt-2">
+        <span className="font-semibold">Height:</span> {block.height}
+      </p>
+      <p className="mt-2">
+        <span className="font-semibold">Weight:</span> {block.weight}
+      </p>
+      <br></br>
+      <p className="font-semibold">Transaction:</p>{" "}
+      {block.tx.map((tx, index) => (
+        <div key={tx}>
+          Tx #{index + 1}:
+          <br />
+          <a
+            href={`/transaction-details/${tx}`}
+            className="underline text-emerald-400"
+          >
+            {tx}
+          </a>
+        </div>
+      ))}
     </div>
   );
 }

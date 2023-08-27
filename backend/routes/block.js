@@ -48,10 +48,24 @@ router.get("/:blockHash", async (req, res) => {
   }
 });
 
+router.get("number/:num", async (req, res) => {
+  try {
+    console.log("blabla");
+    const { blockNum } = req.params;
+    console.log(blockNum);
+
+    const block = await fetchBlockInfo(blockNum);
+    return res.json(block);
+  } catch {
+    return res.status(404).send("Block not found");
+  }
+});
+
 const fetchLatestBlockInfo = async () => {
   try {
     const blockchainInfo = await client.getBlockchainInfo();
     const latestBlockNumber = blockchainInfo.blocks;
+    console.log(latestBlockNumber);
     const latestBlockInfo = await fetchBlockInfo(latestBlockNumber);
     return latestBlockInfo;
   } catch (error) {
